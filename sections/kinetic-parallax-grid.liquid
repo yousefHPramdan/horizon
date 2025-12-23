@@ -1,0 +1,228 @@
+{% schema %}
+{
+  "name": "Kinetic Parallax Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Visual Stories"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "grid_item",
+      "name": "Grid Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "options": [
+            { "value": "col-span-12 md:col-span-6", "label": "Half Width" },
+            { "value": "col-span-12 md:col-span-4", "label": "Third Width" },
+            { "value": "col-span-12 md:col-span-8", "label": "Two Thirds" }
+          ],
+          "default": "col-span-12 md:col-span-6"
+        },
+        {
+          "type": "range",
+          "id": "parallax_speed",
+          "min": 0,
+          "max": 200,
+          "step": 10,
+          "label": "Parallax Depth (px)",
+          "default": 50,
+          "info": "Higher values mean more movement on scroll."
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Project Title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Kinetic Parallax Grid",
+      "blocks": [
+        { "type": "grid_item", "settings": { "width": "col-span-12 md:col-span-8" } },
+        { "type": "grid_item", "settings": { "width": "col-span-12 md:col-span-4" } },
+        { "type": "grid_item", "settings": { "width": "col-span-12 md:col-span-4" } },
+        { "type": "grid_item", "settings": { "width": "col-span-12 md:col-span-4" } },
+        { "type": "grid_item", "settings": { "width": "col-span-12 md:col-span-4" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div
+  id="section-{{ section.id }}"
+  class="kinetic-grid-section relative w-full py-24 overflow-hidden"
+  style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};"
+>
+  <div class="max-w-[1600px] mx-auto px-4 md:px-8">
+    {% if section.settings.title != blank %}
+      <h2 class="text-5xl md:text-7xl font-display font-bold mb-16 opacity-0 reveal-text tracking-tight">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
+
+    <div class="grid grid-cols-12 gap-8 auto-rows-[400px]">
+      {% for block in section.blocks %}
+        <div
+          class="grid-item relative group {{ block.settings.width }} h-full min-h-[400px] overflow-hidden rounded-2xl"
+          {{ block.shopify_attributes }}
+        >
+          <!-- Image Wrapper with Parallax -->
+          <div
+            class="absolute inset-0 w-full h-[120%] -top-[10%] parallax-img-wrapper"
+            data-speed="{{ block.settings.parallax_speed }}"
+          >
+            {% if block.settings.image %}
+              <img
+                src="{{ block.settings.image | image_url: width: 1200 }}"
+                alt="{{ block.settings.heading }}"
+                class="w-full h-full object-cover grayscale transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
+                loading="lazy"
+              >
+            {% else %}
+              <div class="w-full h-full bg-slate-800 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-700">
+                {{ 'image' | placeholder_svg_tag: 'w-20 h-20 opacity-20' }}
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Overlay -->
+          <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500"></div>
+
+          <!-- Content -->
+          <a
+            href="{{ block.settings.link }}"
+            class="absolute inset-0 p-8 flex flex-col justify-end z-10 transition-transform duration-500 group-hover:-translate-y-2"
+          >
+            <h3 class="text-3xl font-bold mb-2 transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
+              {{ block.settings.heading }}
+            </h3>
+            <span
+              class="inline-block w-12 h-[2px] bg-white transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 delay-200"
+            ></span>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const sectionId = '{{ section.id }}';
+    const sectionEl = document.getElementById(`section-${sectionId}`);
+
+    // Use Horizon Core
+    const ensureHorizon = (cb) => {
+      if (window.Horizon) cb();
+      else
+        document.addEventListener('DOMContentLoaded', () => {
+          if (window.Horizon) cb();
+        });
+    };
+
+    ensureHorizon(async () => {
+      const H = window.Horizon;
+
+      // Load Dependencies (GSAP + ScrollTrigger)
+      await H.loadScript(H.resources.gsap).then(() => H.loadScript(H.resources.scrollTrigger));
+
+      // Register
+      gsap.registerPlugin(ScrollTrigger);
+
+      // 1. Reveal Section Title
+      const title = sectionEl.querySelector('.reveal-text');
+      if (title) {
+        gsap.fromTo(
+          title,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: title,
+              start: 'top 80%',
+            },
+          }
+        );
+      }
+
+      // 2. Loop through grid items
+      const items = sectionEl.querySelectorAll('.grid-item');
+      items.forEach((item, i) => {
+        // A. Reveal Animation (Scale Up + Fade In)
+        gsap.fromTo(
+          item,
+          { opacity: 0, scale: 0.9, y: 50 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
+            },
+          }
+        );
+
+        // B. Kinetic Parallax (Image moves inside container)
+        // Note: The container is overflow-hidden. The image is h-120%.
+        // We move the image Y relative to scroll speed.
+        const imgWrapper = item.querySelector('.parallax-img-wrapper');
+        const speed = parseFloat(imgWrapper.dataset.speed || 50);
+
+        gsap.to(imgWrapper, {
+          y: `${speed}px`, // Move down
+          ease: 'none',
+          scrollTrigger: {
+            trigger: item,
+            start: 'top bottom', // when top of item hits bottom of viewport
+            end: 'bottom top', // when bottom of item hits top of viewport
+            scrub: true,
+          },
+        });
+      });
+    });
+  })();
+</script>

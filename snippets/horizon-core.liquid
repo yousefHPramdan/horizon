@@ -1,0 +1,91 @@
+{% comment %}
+  Horizon Core - The architectural bridge for the Horizon x Dawn hybrid.
+  Handles global styling, design tokens, and shared utility resources.
+{% endcomment %}
+
+<!-- Google Fonts (Optional: Preconnect) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Outfit:wght@700&display=swap"
+  rel="stylesheet"
+>
+
+<!-- Tailwind CSS (CDN for Dev/Hybrid, configure for Prod build if needed) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          horizon: {
+            bg: '#0f172a',
+            card: 'rgba(255, 255, 255, 0.05)',
+            accent: '#38bdf8',
+            text: '#e2e8f0',
+            muted: '#94a3b8',
+          },
+        },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'],
+          display: ['Outfit', 'sans-serif'],
+        },
+        backdropBlur: {
+          xs: '2px',
+        },
+      },
+    },
+  };
+</script>
+
+<!-- Global Horizon Utilities -->
+<script>
+  (function () {
+    window.Horizon = window.Horizon || {};
+
+    // Resource Registry
+    window.Horizon.resources = {
+      three: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+      gltfLoader: 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js',
+      gsap: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js',
+      scrollTrigger: 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js',
+      flickityJS: 'https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js',
+      flickityCSS: 'https://unpkg.com/flickity@2/dist/flickity.min.css',
+    };
+
+    // Async Script Loader
+    window.Horizon.loadScript = (url) => {
+      return new Promise((resolve, reject) => {
+        // Check if script is already present
+        if (document.querySelector(`script[src="${url}"]`)) {
+          // If it's loaded, resolve immediately.
+          // Note: In a real robust system we'd check 'load' state, but for CDN links this is usually enough check for existence.
+          return resolve();
+        }
+        const script = document.createElement('script');
+        script.src = url;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    };
+
+    // CSS Loader
+    window.Horizon.loadStyle = (url) => {
+      if (document.querySelector(`link[href="${url}"]`)) return;
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      document.head.appendChild(link);
+    };
+
+    // Design System Helper
+    window.Horizon.design = {
+      glass: 'bg-horizon-card backdrop-blur-xl border border-white/10 shadow-2xl',
+      gradient: 'bg-gradient-to-tr from-horizon-bg via-slate-900 to-slate-800',
+    };
+
+    console.log('Horizon Core Initialized 🚀');
+  })();
+</script>

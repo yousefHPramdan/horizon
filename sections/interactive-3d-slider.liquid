@@ -1,0 +1,426 @@
+{% schema %}
+{
+  "name": "Futuristic 3D Slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Data Source"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select a collection using products. If empty, falls back to blocks."
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Product Limit",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "3D Settings"
+    },
+    {
+      "type": "text",
+      "id": "fallback_model_url",
+      "label": "Fallback GLB Model URL",
+      "info": "URL for a default .glb model if product has no 3D media. If empty, uses a geometric shape."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#38bdf8"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Custom Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Futuristic Product"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$99.00"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Futuristic 3D Slider"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- No global scripts or styles here! We leverage Horizon Core. -->
+
+<style>
+  /* Custom Scrollbar */
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Flickity Horizon Theme Overrides */
+  .flickity-page-dots { bottom: 30px; }
+  .flickity-page-dots .dot {
+    background: {{ section.settings.accent_color }};
+    opacity: 0.3;
+    width: 12px; height: 12px; margin: 0 8px;
+  }
+  .flickity-page-dots .dot.is-selected {
+    opacity: 1;
+    box-shadow: 0 0 10px {{ section.settings.accent_color }};
+  }
+</style>
+
+<div
+  id="section-{{ section.id }}"
+  class="interactive-3d-section relative w-full h-screen overflow-hidden flex items-center justify-center opacity-0 transition-opacity duration-700 bg-horizon-bg text-horizon-text"
+  style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};"
+>
+  <!-- 3D Background Canvas -->
+  <div id="webgl-container-{{ section.id }}" class="absolute inset-0 z-0 w-full h-full"></div>
+
+  <!-- Overlay Gradient -->
+  <div
+    class="absolute inset-0 z-0 bg-gradient-to-t from-[{{ section.settings.bg_color }}] via-transparent to-transparent pointer-events-none"
+  ></div>
+
+  <!-- Flickity Slider Container -->
+  <div class="relative z-10 w-full max-w-[1400px] mx-auto px-4 md:px-8">
+    <div class="main-carousel w-full h-[600px] invisible" id="carousel-{{ section.id }}">
+      {% if section.settings.collection != blank %}
+        {% for product in section.settings.collection.products limit: section.settings.product_limit %}
+          {% assign product_model_url = '' %}
+          {% for media in product.media %}
+            {% if media.media_type == 'model' %}
+              {% assign product_model_url = media.sources[0].url %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          <!-- PRODUCT SLIDE using Horizon Design Tokens -->
+          <div
+            class="carousel-cell w-full md:w-[60%] lg:w-[45%] h-full mx-4 flex flex-col justify-end pb-20 group"
+            data-model-url="{{ product_model_url | default: section.settings.fallback_model_url }}"
+          >
+            <!-- Horizon Card Style -->
+            <div class="bg-horizon-card backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-8 transform transition-all duration-500 hover:border-[{{ section.settings.accent_color }}]/30 relative overflow-hidden">
+              <!-- Content Inner -->
+              <div class="relative z-10 slide-content opacity-0 translate-y-8">
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-2 font-display bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                  {{ product.title }}
+                </h2>
+                <p class="text-xl md:text-2xl font-light mb-6 text-[{{ section.settings.accent_color }}]">
+                  {{ product.price | money }}
+                </p>
+
+                <div class="flex items-center gap-4">
+                  <a
+                    href="{{ product.url }}"
+                    class="inline-flex items-center justify-center px-8 py-3 text-sm font-bold uppercase tracking-widest text-black bg-[{{ section.settings.accent_color }}] rounded-full hover:bg-white hover:shadow-lg transition-all duration-300"
+                  >
+                    View Product
+                  </a>
+                </div>
+              </div>
+
+              <div class="absolute -top-10 -right-10 text-[10rem] font-bold opacity-[0.03] pointer-events-none select-none leading-none font-display">
+                {{ forloop.index }}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        {% for block in section.blocks %}
+          <div
+            class="carousel-cell w-full md:w-[60%] lg:w-[45%] h-full mx-4 flex flex-col justify-end pb-20 group"
+            data-model-url="{{ section.settings.fallback_model_url }}"
+          >
+            <div class="bg-horizon-card backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-8 transform transition-all duration-500">
+              <div class="relative z-10 slide-content opacity-0 translate-y-8">
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-2 font-display bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                  {{ block.settings.title }}
+                </h2>
+                <p class="text-xl md:text-2xl font-light mb-6 text-[{{ section.settings.accent_color }}]">
+                  {{ block.settings.price }}
+                </p>
+                {% if block.settings.link %}
+                  <a
+                    href="{{ block.settings.link }}"
+                    class="inline-flex items-center justify-center px-8 py-3 text-sm font-bold uppercase tracking-widest text-black bg-[{{ section.settings.accent_color }}] rounded-full hover:bg-white transition-all duration-300"
+                  >
+                    Shop Now
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const sectionId = '{{ section.id }}';
+    const sectionEl = document.getElementById(`section-${sectionId}`);
+
+    // Wait for Horizon Core
+    const ensureHorizon = (cb) => {
+      if (window.Horizon) cb();
+      else
+        document.addEventListener('DOMContentLoaded', () => {
+          if (window.Horizon) cb();
+        });
+    };
+
+    ensureHorizon(async () => {
+      const H = window.Horizon;
+      const R = H.resources;
+
+      // Load styles via Core
+      H.loadStyle(R.flickityCSS);
+
+      // Initializer used by IntersectionObserver
+      const initSection = async () => {
+        // Parallel load dependencies
+        await Promise.all([
+          H.loadScript(R.flickityJS),
+          H.loadScript(R.three).then(() => H.loadScript(R.gltfLoader)),
+          H.loadScript(R.gsap).then(() => H.loadScript(R.scrollTrigger)),
+        ]);
+
+        startApp();
+      };
+
+      let renderer, scene, camera, flkty, animationId, currentModel;
+
+      const startApp = () => {
+        sectionEl.classList.remove('opacity-0');
+
+        const container = document.getElementById(`webgl-container-${sectionId}`);
+        const carouselEl = document.getElementById(`carousel-${sectionId}`);
+
+        if (!container || !carouselEl) return;
+
+        // THREE JS
+        scene = new THREE.Scene();
+        scene.fog = new THREE.Fog('{{ section.settings.bg_color }}', 5, 20);
+
+        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 0, 8);
+
+        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        container.innerHTML = '';
+        container.appendChild(renderer.domElement);
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+        const spotLight = new THREE.SpotLight('{{ section.settings.accent_color }}', 2);
+        spotLight.position.set(-5, 5, 0);
+        scene.add(spotLight);
+
+        // Loader
+        const loader = new THREE.GLTFLoader();
+
+        const createFallbackMesh = () => {
+          const geometry = new THREE.IcosahedronGeometry(1.5, 0);
+          const material = new THREE.MeshStandardMaterial({
+            color: '{{ section.settings.accent_color }}',
+            roughness: 0.2,
+            metalness: 0.8,
+            wireframe: true,
+          });
+          return new THREE.Mesh(geometry, material);
+        };
+
+        const animateInModel = (model) => {
+          model.scale.set(0, 0, 0);
+          gsap.to(model.scale, { x: 1, y: 1, z: 1, duration: 1, ease: 'elastic.out(1, 0.75)' });
+          gsap.to(model.rotation, { y: Math.PI * 2, duration: 2, ease: 'power2.out' });
+        };
+
+        const loadModel = (url) => {
+          if (currentModel) {
+            gsap.killTweensOf(currentModel.scale);
+            gsap.killTweensOf(currentModel.rotation);
+            // Quick dispose
+            scene.remove(currentModel);
+            // Proper disposal is handled in unload, or we can do it here if strict
+            currentModel = null;
+          }
+
+          if (!url) {
+            currentModel = createFallbackMesh();
+            scene.add(currentModel);
+            animateInModel(currentModel);
+            return;
+          }
+
+          loader.load(
+            url,
+            (gltf) => {
+              currentModel = gltf.scene;
+              const box = new THREE.Box3().setFromObject(currentModel);
+              const center = box.getCenter(new THREE.Vector3());
+              currentModel.position.sub(center);
+              scene.add(currentModel);
+              animateInModel(currentModel);
+            },
+            undefined,
+            (err) => {
+              console.warn('Fallback due to error', err);
+              currentModel = createFallbackMesh();
+              scene.add(currentModel);
+              animateInModel(currentModel);
+            }
+          );
+        };
+
+        // Loop
+        let mouseX = 0,
+          mouseY = 0;
+        const animate = () => {
+          animationId = requestAnimationFrame(animate);
+          if (currentModel) {
+            currentModel.rotation.y += 0.005;
+            currentModel.rotation.x += (mouseY * 0.5 - currentModel.rotation.x) * 0.05;
+            currentModel.rotation.z += (mouseX * 0.5 - currentModel.rotation.z) * 0.05;
+          }
+          renderer.render(scene, camera);
+        };
+        animate();
+
+        window.addEventListener('mousemove', (e) => {
+          mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+          mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Flickity
+        carouselEl.classList.remove('invisible');
+        flkty = new Flickity(carouselEl, {
+          cellAlign: 'center',
+          contain: true,
+          wrapAround: true,
+          prevNextButtons: true,
+          pageDots: true,
+          bgLazyLoad: 1,
+        });
+
+        flkty.on('change', (index) => {
+          const slides = document.querySelectorAll(`#carousel-${sectionId} .carousel-cell`);
+          const slide = slides[index];
+          loadModel(slide.dataset.modelUrl);
+
+          slides.forEach((s) => gsap.to(s.querySelector('.slide-content'), { opacity: 0, y: 50 }));
+
+          const activeContent = slide.querySelector('.slide-content');
+          if (activeContent) {
+            gsap.to(activeContent, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.3 });
+            gsap.fromTo(
+              activeContent.children,
+              { opacity: 0, x: -20 },
+              { opacity: 1, x: 0, duration: 0.5, stagger: 0.1, delay: 0.4 }
+            );
+          }
+        });
+
+        flkty.dispatchEvent('change', null, [0]);
+
+        // ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        const slides = document.querySelectorAll(`#carousel-${sectionId} .carousel-cell`);
+        slides.forEach((slide) => {
+          const card = slide.querySelector('.bg-horizon-card'); // Use Horizon class selector
+          if (card) {
+            gsap.to(card, {
+              scrollTrigger: {
+                trigger: slide,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 1,
+              },
+              y: -50,
+            });
+          }
+        });
+      };
+
+      // Lazy Intersection Observer
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              initSection();
+              observer.disconnect();
+            }
+          });
+        },
+        { rootMargin: '200px' }
+      );
+      observer.observe(sectionEl);
+
+      // Shopify Cleanup
+      document.addEventListener('shopify:section:unload', (e) => {
+        if (e.detail.sectionId === sectionId) {
+          if (animationId) cancelAnimationFrame(animationId);
+          if (observer) observer.disconnect();
+          if (flkty) flkty.destroy();
+          if (renderer) {
+            renderer.dispose();
+            renderer.domElement.remove();
+          }
+        }
+      });
+    });
+  })();
+</script>

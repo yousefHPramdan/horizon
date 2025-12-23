@@ -1,0 +1,305 @@
+{% schema %}
+{
+  "name": "3D Feature Showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Model Settings"
+    },
+    {
+      "type": "text",
+      "id": "model_url",
+      "label": "GLB Model URL",
+      "info": "URL to the 3D model. If empty, a geometric shape is used."
+    },
+    {
+      "type": "color",
+      "id": "model_color",
+      "label": "Model/Wireframe Color",
+      "default": "#22d3ee"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#020617"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Tech Specs"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Aerodynamic"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Engineered for minimal drag and maximum efficiency."
+        },
+        {
+          "type": "header",
+          "content": "Camera/Rotation Angle"
+        },
+        {
+          "type": "range",
+          "id": "rot_x",
+          "min": 0,
+          "max": 360,
+          "step": 5,
+          "label": "Rotation X (deg)",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "rot_y",
+          "min": 0,
+          "max": 360,
+          "step": 5,
+          "label": "Rotation Y (deg)",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "rot_z",
+          "min": 0,
+          "max": 360,
+          "step": 5,
+          "label": "Rotation Z (deg)",
+          "default": 0
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Feature Showcase",
+      "blocks": [
+        { "type": "feature", "settings": { "title": "Precision", "rot_y": 45 } },
+        { "type": "feature", "settings": { "title": "Speed", "rot_y": 180 } },
+        { "type": "feature", "settings": { "title": "Control", "rot_x": 90 } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div
+  id="section-{{ section.id }}"
+  class="three-feature-section relative w-full h-screen overflow-hidden bg-slate-950 text-white flex flex-col md:flex-row"
+  style="background-color: {{ section.settings.bg_color }};"
+>
+  <!-- Left: 3D Canvas -->
+  <div class="relative w-full md:w-3/5 h-[50vh] md:h-full order-1 md:order-1">
+    <div id="canvas-{{ section.id }}" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+    <!-- Decorative Gradient -->
+    <div
+      class="absolute inset-0 bg-radial-gradient from-transparent to-{{ section.settings.bg_color }} opacity-80 pointer-events-none"
+    ></div>
+  </div>
+
+  <!-- Right: Vertical Slider -->
+  <div class="relative w-full md:w-2/5 h-[50vh] md:h-full order-2 md:order-2 flex flex-col justify-center relative z-10 p-8 md:p-16">
+    {% if section.settings.heading != blank %}
+      <h2 class="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 mb-8 ml-4">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <!-- Carousel Container -->
+    <div id="carousel-{{ section.id }}" class="feature-carousel w-full h-[300px]">
+      {% for block in section.blocks %}
+        <!-- Slide -->
+        <div
+          class="carousel-cell w-full h-full mr-4 opacity-40 [&.is-selected]:opacity-100 transition-opacity duration-500"
+          data-rot-x="{{ block.settings.rot_x }}"
+          data-rot-y="{{ block.settings.rot_y }}"
+          data-rot-z="{{ block.settings.rot_z }}"
+        >
+          <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-2xl shadow-2xl h-full flex flex-col justify-center transform transition-transform duration-500 hover:scale-[1.02]">
+            <div class="text-4xl md:text-5xl font-display font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-400">
+              {{ block.settings.title }}
+            </div>
+            <p class="text-gray-400 text-lg leading-relaxed">
+              {{ block.settings.description }}
+            </p>
+            <div class="mt-8 flex items-center gap-2 text-sm font-mono text-cyan-400">
+              <span>XYZ: {{ block.settings.rot_x }}°, {{ block.settings.rot_y }}°, {{ block.settings.rot_z }}°</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Custom Nav Controls (if desired, or use default Flickity) -->
+    <div class="absolute bottom-8 right-8 flex gap-2">
+      <!-- Controls customizable via CSS -->
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Vertical-ish look for desktop Flickity or just clean standard slides */
+  .feature-carousel .carousel-cell {
+    /* Simple horizontal slide behavior */
+  }
+  .flickity-page-dots .dot {
+    background: {{ section.settings.model_color }};
+  }
+</style>
+
+<script>
+  (function () {
+    const sectionId = '{{ section.id }}';
+
+    // Horizon Check
+    const start = () => {
+      const H = window.Horizon;
+      if (!H) return;
+
+      // Load deps
+      Promise.all([
+        H.loadScript(H.resources.three).then(() => H.loadScript(H.resources.gltfLoader)),
+        H.loadScript(H.resources.gsap),
+        H.loadScript(H.resources.flickityJS),
+      ]).then(() => init());
+    };
+
+    const ensureHorizon = (cb) => {
+      if (window.Horizon) cb();
+      else
+        document.addEventListener('DOMContentLoaded', () => {
+          if (window.Horizon) cb();
+        });
+    };
+
+    ensureHorizon(start);
+
+    function init() {
+      const container = document.getElementById(`canvas-${sectionId}`);
+      const carouselEl = document.getElementById(`carousel-${sectionId}`);
+      if (!container || !carouselEl) return;
+
+      // --- THREE JS SETUP ---
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.z = 6;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Light
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambLight);
+      const dirLight = new THREE.DirectionalLight('{{ section.settings.model_color }}', 2);
+      dirLight.position.set(5, 5, 5);
+      scene.add(dirLight);
+      const blueLight = new THREE.PointLight(0x0000ff, 1);
+      blueLight.position.set(-5, -5, 5);
+      scene.add(blueLight);
+
+      // Object
+      let modelGroup = new THREE.Group();
+      scene.add(modelGroup);
+
+      const modelUrl = '{{ section.settings.model_url }}';
+
+      if (modelUrl) {
+        new THREE.GLTFLoader().load(modelUrl, (gltf) => {
+          const obj = gltf.scene;
+          // Center and Scale logic
+          const box = new THREE.Box3().setFromObject(obj);
+          const center = box.getCenter(new THREE.Vector3());
+          obj.position.sub(center); // center at 0,0,0
+          modelGroup.add(obj);
+
+          // Appear anim
+          modelGroup.scale.set(0, 0, 0);
+          gsap.to(modelGroup.scale, { x: 1, y: 1, z: 1, duration: 1, ease: 'back.out(1.7)' });
+        });
+      } else {
+        // Fallback Geo
+        const geometry = new THREE.TorusKnotGeometry(1.2, 0.3, 128, 32);
+        const material = new THREE.MeshStandardMaterial({
+          color: '{{ section.settings.model_color }}',
+          roughness: 0.1,
+          metalness: 0.8,
+          wireframe: false,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        modelGroup.add(mesh);
+
+        // Wireframe overlay
+        const wireGeo = new THREE.WireframeGeometry(geometry);
+        const wireMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1 });
+        const wire = new THREE.LineSegments(wireGeo, wireMat);
+        modelGroup.add(wire);
+      }
+
+      // Animation Loop
+      const animate = () => {
+        requestAnimationFrame(animate);
+        // Idle rotation if desired, but we want precise control.
+        // Let's add very subtle floating
+        modelGroup.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+        renderer.render(scene, camera);
+      };
+      animate();
+
+      // Resize
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+      // --- FLICKITY CONTROLS ROTATION ---
+      const flkty = new Flickity(carouselEl, {
+        cellAlign: 'left',
+        contain: true,
+        prevNextButtons: false,
+        pageDots: true,
+        draggable: true,
+      });
+
+      const toRad = (deg) => deg * (Math.PI / 180);
+
+      const updateRotation = (index) => {
+        const slides = carouselEl.querySelectorAll('.carousel-cell');
+        const slide = slides[index];
+        const rx = parseFloat(slide.dataset.rotX || 0);
+        const ry = parseFloat(slide.dataset.rotY || 0);
+        const rz = parseFloat(slide.dataset.rotZ || 0);
+
+        gsap.to(modelGroup.rotation, {
+          x: toRad(rx),
+          y: toRad(ry),
+          z: toRad(rz),
+          duration: 1.2,
+          ease: 'power3.inOut',
+        });
+      };
+
+      flkty.on('change', updateRotation);
+      // Init
+      updateRotation(0);
+    }
+  })();
+</script>
