@@ -1,0 +1,12 @@
+{
+    "name": "horizon-theme",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "npx tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --watch",
+        "build": "npx tailwindcss -i ./src/tailwind.css -o ./assets/tailwind.css --minify"
+    },
+    "devDependencies": {
+        "tailwindcss": "^3.4.1"
+    }
+}

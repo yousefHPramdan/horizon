@@ -14,7 +14,9 @@
       >
     {%- endif -%}
 
-    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    {% comment %}
+      This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently <!-- Sync Trigger -->
+    {% endcomment %}
     {% if settings.transition_to_main_product or settings.page_transition_enabled %}
       <link
         rel="expect"
@@ -37,10 +39,11 @@
 
     {{ content_for_header }}
 
+    {{ 'tailwind.css' | asset_url | stylesheet_tag }}
     {% render 'horizon-core' %}
   </head>
 
-  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %} bg-horizon-bg text-horizon-text antialiased selection:bg-horizon-accent selection:text-white">
     {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
     <div id="header-group">
       {% sections 'header-group' %}

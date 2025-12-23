@@ -7,282 +7,230 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
-    "hero_jVaWmY": {
-      "type": "hero",
+    "hero_slider": {
+      "type": "interactive-3d-slider",
+      "settings": {
+        "collection": "all",
+        "product_limit": 6,
+        "bg_color": "#020617",
+        "accent_color": "#06b6d4",
+        "text_color": "#f8fafc"
+      }
+    },
+    "brand_intro": {
+      "type": "horizon-rich-text",
       "blocks": {
-        "text_YLPk4p": {
-          "type": "text",
-          "name": "t:names.heading",
+        "heading_block": {
+          "type": "heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground-heading)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "heading": "Redefining Reality",
+            "heading_size": "h1"
+          }
         },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
+        "text_block": {
+          "type": "text",
           "settings": {
-            "label": "Shop all",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-secondary",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
+            "text": "<p>Welcome to the bleeding edge of commerce. We curate the finest gear for the next generation of explorers.</p>"
+          }
+        }
+      },
+      "settings": {
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "collections_grid": {
+      "type": "kinetic-parallax-grid",
+      "blocks": {
+        "col_1": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-8",
+            "parallax_speed": 40,
+            "heading": "Cybernetics"
+          }
+        },
+        "col_2": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 80,
+            "heading": "Apparel"
+          }
+        },
+        "col_3": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 20,
+            "heading": "Accessories"
+          }
+        },
+        "col_4": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-8",
+            "parallax_speed": 60,
+            "heading": "Footwear"
+          }
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
+        "col_1",
+        "col_2",
+        "col_3",
+        "col_4"
       ],
-      "name": "t:names.hero",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "space-between",
-        "vertical_alignment": "flex-end",
-        "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-6",
-        "toggle_overlay": true,
-        "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "bg_color": "#0f172a",
+        "title": "Explore Dimensions",
+        "text_color": "#f1f5f9"
       }
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "std_slideshow": {
+      "type": "slideshow",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "slide_1": {
+          "type": "_slide",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-1"
           },
           "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
+            "heading": {
+              "type": "text",
               "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "text": "<h2>Standard Series</h2>"
+              }
             },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
+            "text": {
+              "type": "text",
               "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
+                "text": "<p>Classic Reliability</p>"
+              }
             }
           },
           "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
+            "heading",
+            "text"
           ]
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "slide_2": {
+          "type": "_slide",
           "settings": {
-            "product_card_gap": 4,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-1"
           },
           "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
+            "heading": {
+              "type": "text",
               "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "text": "<h2>Modern Essentials</h2>"
+              }
             },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
+            "text": {
+              "type": "text",
               "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "color": "var(--color-foreground)",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "text": "<p>Everyday Performance</p>"
+              }
             }
           },
           "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
+            "heading",
+            "text"
           ]
         }
       },
-      "name": "t:names.featured_collection",
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "slide_height": "medium"
+      }
+    },
+    "tech_showcase": {
+      "type": "3d-feature-showcase",
+      "blocks": {
+        "tech_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Neural Link",
+            "description": "Direct interface compatibility for seamless user experience.",
+            "rot_x": 0,
+            "rot_y": 0
+          }
+        },
+        "tech_2": {
+          "type": "feature",
+          "settings": {
+            "title": "Nano-Weave",
+            "description": "Ultra-lightweight composite materials for maximum durability.",
+            "rot_x": 10,
+            "rot_y": 45
+          }
+        },
+        "tech_3": {
+          "type": "feature",
+          "settings": {
+            "title": "Quantum Shell",
+            "description": "Adaptive environmental protection in any atmosphere.",
+            "rot_x": 90,
+            "rot_z": 0
+          }
+        }
+      },
+      "block_order": [
+        "tech_1",
+        "tech_2",
+        "tech_3"
+      ],
+      "settings": {
+        "model_color": "#22d3ee",
+        "bg_color": "#000000",
+        "heading": "Flagship Technology"
+      }
+    },
+    "collection_list": {
+      "type": "collection-list",
+      "settings": {
+        "collection_list": [
+          "all"
+        ],
+        "columns": 3,
+        "mobile_columns": "1"
+      }
+    },
+    "trending_products": {
+      "type": "floating-kinetic-grid",
       "settings": {
         "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "parallax_intensity": 60,
+        "bg_color": "#ffffff",
+        "text_color": "#0f172a",
+        "accent_color": "#2563eb"
+      }
+    },
+    "blog_posts": {
+      "type": "featured-blog-posts",
+      "settings": {
+        "blog": "news",
+        "post_limit": 3
       }
     }
   },
   "order": [
-    "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "hero_slider",
+    "brand_intro",
+    "collections_grid",
+    "std_slideshow",
+    "tech_showcase",
+    "trending_products",
+    "collection_list",
+    "blog_posts"
   ]
 }

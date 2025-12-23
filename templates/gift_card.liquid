@@ -109,21 +109,21 @@
     {%- render 'color-schemes' -%}
   </head>
 
-  <body class="gift-card">
+  <body class="gift-card bg-horizon-bg text-horizon-text antialiased">
     <header>
-      <div class="gift-card__text-wrapper">
-        <h1>{{ shop.name }}</h1>
+      <div class="gift-card__text-wrapper text-center py-12">
+        <h1 class="font-display font-bold text-5xl tracking-tighter text-white">{{ shop.name }}</h1>
       </div>
     </header>
 
-    <main class="gift-card__main">
-      <div class="gift-card__image-wrapper">
+    <main class="gift-card__main max-w-xl mx-auto p-8 rounded-2xl bg-horizon-card backdrop-blur-xl border border-white/10 shadow-2xl">
+      <div class="gift-card__image-wrapper mb-8">
         {%- if settings.logo != blank -%}
           {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-          {{ settings.logo | image_url: width: 324 | image_tag: class: 'gift-card__image', alt: logo_alt }}
+          {{ settings.logo | image_url: width: 324 | image_tag: class: 'gift-card__image mx-auto', alt: logo_alt }}
         {%- else %}
           <img
-            class="gift-card__image gift-card__image-generic"
+            class="gift-card__image gift-card__image-generic mx-auto rounded-xl shadow-lg border border-white/5"
             src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
             alt=""
             height="200"
@@ -132,12 +132,14 @@
           >
         {%- endif %}
       </div>
-      <div class="gift-card__price">
-        <h2>
+      <div class="gift-card__price text-center mb-8">
+        <h2 class="text-4xl text-horizon-accent font-display font-bold">
           {{ gift_card.balance | money_with_currency }}
         </h2>
         {%- if gift_card.enabled == false or gift_card.expired -%}
-          <p class="gift-card__badge gift-card__badge--expired">{{ 'gift_cards.issued.expired' | t }}</p>
+          <p class="gift-card__badge gift-card__badge--expired mt-2 text-red-400 font-medium">
+            {{ 'gift_cards.issued.expired' | t }}
+          </p>
         {%- endif -%}
       </div>
       {% if gift_card.expires_on %}

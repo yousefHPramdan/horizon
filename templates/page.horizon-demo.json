@@ -1,51 +1,5 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "cart_main": {
-      "type": "main-cart",
-      "blocks": {
-        "cart-page-title": {
-          "type": "_cart-title",
-          "static": true,
-          "settings": {
-            "title": "Cart",
-            "show_count": true,
-            "type_preset": "h2",
-            "alignment": "center"
-          }
-        },
-        "cart-page-items": {
-          "type": "_cart-products",
-          "static": true,
-          "settings": {
-            "gap": 24,
-            "dividers": true
-          }
-        },
-        "cart-page-summary": {
-          "type": "_cart-summary",
-          "static": true,
-          "settings": {
-            "extend_summary": true,
-            "color_scheme": "scheme-1"
-          }
-        }
-      },
-      "settings": {
-        "color_scheme": "scheme-1",
-        "section_width": "page-width",
-        "padding-block-start": 40,
-        "padding-block-end": 40
-      }
-    },
     "hero_3d": {
       "type": "interactive-3d-slider",
       "settings": {
@@ -169,22 +123,21 @@
         "feat_3"
       ]
     },
-    "recs": {
+    "floating_grid": {
       "type": "floating-kinetic-grid",
       "settings": {
-        "parallax_intensity": 30,
+        "parallax_intensity": 80,
         "bg_color": "#ffffff",
         "text_color": "#0f172a",
-        "accent_color": "#06b6d4"
+        "accent_color": "#0ea5e9"
       }
     }
   },
   "order": [
-    "cart_main",
     "hero_3d",
     "intro_text",
     "kinetic_grid",
     "feature_showcase",
-    "recs"
+    "floating_grid"
   ]
 }
