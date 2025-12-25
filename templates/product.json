@@ -21,18 +21,18 @@
             "image_gap": 4,
             "large_first_image": false,
             "icons_style": "arrow",
-            "slideshow_controls_style": "counter",
-            "slideshow_mobile_controls_style": "dots",
-            "thumbnail_position": "right",
-            "thumbnail_width": 44,
-            "thumbnail_radius": 0,
-            "aspect_ratio": "adapt",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "thumbnails",
+            "thumbnail_position": "bottom",
+            "thumbnail_width": 71,
+            "thumbnail_radius": 16,
+            "aspect_ratio": "2/1",
             "constrain_to_viewport": true,
             "media_fit": "contain",
-            "media_radius": 0,
+            "media_radius": 12,
             "extend_media": false,
             "zoom": true,
-            "video_loop": false,
+            "video_loop": true,
             "hide_variants": true,
             "padding-block-start": 0,
             "padding-block-end": 0,
@@ -177,9 +177,9 @@
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
               "settings": {
-                "variant_style": "buttons",
-                "show_swatches": false,
-                "alignment": "left",
+                "variant_style": "dropdowns",
+                "show_swatches": true,
+                "alignment": "right",
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
@@ -410,10 +410,46 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "main_product_modern_hRdwrh": {
+      "type": "main-product-modern",
+      "blocks": {
+        "variant_picker_kXmi4G": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        }
+      },
+      "block_order": [
+        "variant_picker_kXmi4G"
+      ],
+      "name": "Product Information (Modern)",
+      "settings": {
+        "image_zoom": "hover"
+      }
+    },
+    "hero_3d_modern_WTb9Xh": {
+      "type": "hero-3d-modern",
+      "name": "3D Hero (Three.js)",
+      "settings": {
+        "heading": "Future of eCommerce"
+      }
+    },
+    "featured_collection_modern_ThRqDq": {
+      "type": "featured-collection-modern",
+      "name": "Featured Collection (Modern)",
+      "settings": {
+        "title": "Featured Collection",
+        "collection": "automated-collection"
+      }
     }
   },
   "order": [
     "main",
-    "product_recommendations_qggXJq"
+    "product_recommendations_qggXJq",
+    "main_product_modern_hRdwrh",
+    "hero_3d_modern_WTb9Xh",
+    "featured_collection_modern_ThRqDq"
   ]
 }
