@@ -1,0 +1,217 @@
+{% comment %}
+  r/Shopify Theme - Main Product Modern
+  Based on Dawn's main-product section but styled with TailwindCSS for Horizon.
+{% endcomment %}
+
+<section
+  id="MainProduct-{{ section.id }}"
+  class="section-{{ section.id }}-padding bg-white"
+  data-section="{{ section.id }}"
+>
+  {{ 'product-info.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'variant-selects.js' | asset_url }}" defer="defer"></script>
+
+  <div class="container mx-auto px-4 py-8 lg:px-8 max-w-7xl">
+    <div class="product grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+      <!-- Left Column: Media Gallery -->
+      <div class="product__media-wrapper">
+        {% render 'product-media-gallery-modern', product: product, variant_images: variant_images, section: section %}
+      </div>
+
+      <!-- Right Column: Product Info -->
+      <div class="product__info-wrapper">
+        <product-info
+          id="ProductInfo-{{ section.id }}"
+          class="product__info-container flex flex-col gap-6"
+          data-section="{{ section.id }}"
+          data-url="{{ product.url }}"
+        >
+          {%- assign product_form_id = 'product-form-' | append: section.id -%}
+
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                {% render block %}
+
+              {%- when 'text' -%}
+                <p class="text-sm text-gray-600 uppercase tracking-widest font-semibold" {{ block.shopify_attributes }}>
+                  {{- block.settings.text -}}
+                </p>
+
+              {%- when 'title' -%}
+                <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight" {{ block.shopify_attributes }}>
+                  {{ product.title | escape }}
+                </h1>
+
+              {%- when 'price' -%}
+                <div
+                  id="price-{{ section.id }}"
+                  class="text-2xl font-medium text-gray-900"
+                  role="status"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- render 'price', product: product, use_variant: true, show_badges: true -%}
+                </div>
+
+              {%- when 'sku' -%}
+                <p class="text-xs text-gray-500 font-mono" {{ block.shopify_attributes }}>
+                  {{ 'products.product.sku' | t }}: {{ product.selected_or_first_available_variant.sku }}
+                </p>
+
+              {%- when 'description' -%}
+                {%- if product.description != blank -%}
+                  <div class="prose prose-sm text-gray-700 max-w-none" {{ block.shopify_attributes }}>
+                    {{ product.description }}
+                  </div>
+                {%- endif -%}
+
+              {%- when 'variant_picker' -%}
+                {% render 'product-variant-picker-modern',
+                  product: product,
+                  block: block,
+                  product_form_id: product_form_id
+                %}
+
+              {%- when 'buy_buttons' -%}
+                {% render 'buy-buttons-modern',
+                  block: block,
+                  product: product,
+                  product_form_id: product_form_id,
+                  section_id: section.id
+                %}
+
+              {%- when 'share' -%}
+                <div class="flex items-center gap-2 mt-4" {{ block.shopify_attributes }}>
+                  <!-- Simple Share Link -->
+                  <a
+                    href="{{ product.url }}"
+                    class="text-sm text-gray-500 hover:text-black underline decoration-1 underline-offset-2"
+                  >
+                    Share this product
+                  </a>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </product-info>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "tag": "section",
+  "class": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Text block",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "sku",
+      "name": "SKU",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "options": [
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            },
+            {
+              "value": "button",
+              "label": "Pills"
+            }
+          ],
+          "default": "button",
+          "label": "Type"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "default": true,
+          "label": "Show dynamic checkout buttons"
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share",
+      "limit": 1
+    }
+  ],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_zoom",
+      "label": "Image Zoom",
+      "options": [
+        { "value": "hover", "label": "Hover" },
+        { "value": "click", "label": "Click" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "hover"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Information (Modern)",
+      "blocks": [
+        { "type": "text", "settings": { "text": "New Arrival" } },
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "variant_picker" },
+        { "type": "buy_buttons" },
+        { "type": "description" }
+      ]
+    }
+  ]
+}
+{% endschema %}

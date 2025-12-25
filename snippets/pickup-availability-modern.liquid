@@ -1,0 +1,28 @@
+{% comment %}
+  Renders pickup availability container and functionality
+  Usage:
+  {% render 'pickup-availability-modern', product: product %}
+{% endcomment %}
+
+<!-- Dependencies -->
+<script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+
+<pickup-availability
+  class="pickup-availability block my-4"
+  available-if-variant-is-selected="true"
+  data-base-url="{{ shop.url }}{{ routes.root_url }}"
+  data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+  data-has-only-default-variant="{{ product.has_only_default_variant }}"
+>
+  <template>
+    <pickup-availability-preview class="pickup-availability-preview flex items-start gap-3">
+      {% render 'icon-unavailable' %}
+      <div class="pickup-availability-info">
+        <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+        <button class="pickup-availability-button link link--text underlined-link">
+          {{ 'products.product.pickup_availability.refresh' | t }}
+        </button>
+      </div>
+    </pickup-availability-preview>
+  </template>
+</pickup-availability>

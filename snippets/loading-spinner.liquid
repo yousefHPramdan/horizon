@@ -1,0 +1,37 @@
+<div class="loading-spinner hidden">
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    class="spinner w-6 h-6 animate-spin text-current"
+    viewBox="0 0 66 66"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      class="path opacity-25"
+      fill="none"
+      stroke-width="6"
+      cx="33"
+      cy="33"
+      r="30"
+    ></circle>
+    <path
+      class="path opacity-75"
+      fill="currentColor"
+      d="M33 3a30 30 0 0 1 30 30h-6a24 24 0 0 0-24-24V3z"
+    ></path>
+  </svg>
+</div>
+
+<style>
+  .spinner {
+    animation: rotater 1.4s linear infinite;
+  }
+  @keyframes rotater {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>

@@ -1,0 +1,20 @@
+{
+  "frontend/entrypoints/theme.js": {
+    "file": "theme.js",
+    "name": "theme",
+    "src": "frontend/entrypoints/theme.js",
+    "isEntry": true,
+    "dynamicImports": [
+      "node_modules/three/build/three.module.js"
+    ],
+    "css": [
+      "theme.css"
+    ]
+  },
+  "node_modules/three/build/three.module.js": {
+    "file": "three.module.BX2Vlr8r.js",
+    "name": "three.module",
+    "src": "node_modules/three/build/three.module.js",
+    "isDynamicEntry": true
+  }
+}

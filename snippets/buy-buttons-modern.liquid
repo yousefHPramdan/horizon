@@ -1,0 +1,83 @@
+{% comment %}
+  Renders product buy-buttons.
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} product form id.
+  - section_id: {String} id of section to which this snippet belongs.
+{% endcomment %}
+
+<div {{ block.shopify_attributes }} class="product-form-container">
+  {%- if product != blank -%}
+    <product-form class="product-form block" data-section-id="{{ section.id }}">
+      <div class="product-form__error-message-wrapper text-red-500 text-sm mb-2 hidden" role="alert">
+        <span class="product-form__error-message"></span>
+      </div>
+
+      {%- form 'product',
+        product,
+        id: product_form_id,
+        class: 'form',
+        novalidate: 'novalidate',
+        data-type: 'add-to-cart-form'
+      -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+          disabled
+          class="product-variant-id"
+        >
+
+        <div class="product-form__buttons flex flex-col gap-3">
+          <button
+            id="ProductSubmitButton-{{ section_id }}"
+            type="submit"
+            name="add"
+            class="w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            {% if product.selected_or_first_available_variant.available == false %}
+              disabled
+            {% endif %}
+          >
+            <span>
+              {%- if product.selected_or_first_available_variant.available == false -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- else -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- endif -%}
+            </span>
+            <div class="loading-overlay__spinner hidden">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                class="spinner w-5 h-5 animate-spin ml-2 inline"
+                viewBox="0 0 66 66"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+          </button>
+
+          {%- if block.settings.show_dynamic_checkout -%}
+            <div class="dynamic-checkout-buttons">
+              {{ form | payment_button }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+    </product-form>
+  {%- else -%}
+    <div class="product-form">
+      <div class="product-form__buttons form">
+        <button
+          type="submit"
+          class="w-full py-3 px-6 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gray-300 cursor-not-allowed"
+          disabled
+        >
+          {{ 'products.product.sold_out' | t }}
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
+</div>

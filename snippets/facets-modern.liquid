@@ -1,0 +1,143 @@
+{% comment %}
+  Renders facets (filtering and sorting)
+  Usage:
+  {% render 'facets-modern', results: collection, enable_filtering: true, enable_sorting: true %}
+{% endcomment %}
+
+<!-- Dependencies -->
+<script src="{{ 'facets.js' | asset_url }}" defer="defer"></script>
+
+<div class="facets-container">
+  {%- if enable_filtering or enable_sorting -%}
+    <facet-filters-form class="facets block mb-8">
+      <form id="FacetFiltersForm" class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Search Terms -->
+        {%- if results.terms -%}
+          <input type="hidden" name="q" value="{{ results.terms | escape }}">
+          <input name="options[prefix]" type="hidden" value="last">
+        {%- endif -%}
+
+        <!-- Filtering -->
+        {% if enable_filtering %}
+          <div class="flex flex-wrap gap-4">
+            <p class="text-sm font-bold uppercase tracking-widest self-center">
+              {{ 'products.facets.filter_by_label' | t }}
+            </p>
+
+            {%- for filter in results.filters -%}
+              <details class="group relative disclosure-has-popup">
+                <summary class="flex items-center gap-2 cursor-pointer hover:underline text-sm font-medium">
+                  <span>{{ filter.label | escape }}</span>
+                  <span class="text-xs">
+                    {%- if filter.active_values.size > 0 -%}
+                      ({{ filter.active_values.size }})
+                    {%- endif -%}
+                  </span>
+                  {% render 'icon-caret', class: 'w-3 h-3 transition-transform group-open:rotate-180' %}
+                </summary>
+
+                <div class="absolute top-full left-0 min-w-[200px] bg-white border shadow-xl z-50 p-4 rounded mt-2">
+                  <div class="flex justify-between items-center mb-2 pb-2 border-b">
+                    <span class="text-xs text-gray-500">{{ filter.active_values.size }} selected</span>
+                    <facet-remove>
+                      <a href="{{ filter.url_to_remove }}" class="text-xs underline hover:no-underline">Reset</a>
+                    </facet-remove>
+                  </div>
+
+                  <ul class="max-h-64 overflow-y-auto space-y-2">
+                    {%- for value in filter.values -%}
+                      <li class="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value }}"
+                          id="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                          {% if value.active %}
+                            checked
+                          {% endif %}
+                          {% if value.count == 0 and value.active == false %}
+                            disabled
+                          {% endif %}
+                          class="rounded border-gray-300 text-black focus:ring-0"
+                        >
+                        <label
+                          for="Filter-{{ filter.label | escape }}-{{ forloop.index }}"
+                          class="text-sm {% if value.count == 0 and value.active == false %}text-gray-400 line-through{% endif %}"
+                        >
+                          {{ value.label | escape }}
+                          <span class="text-xs text-gray-500">({{ value.count }})</span>
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {% endif %}
+
+        <!-- Sorting -->
+        {%- if enable_sorting -%}
+          <div class="flex items-center gap-2">
+            <label for="SortBy" class="text-sm font-medium">{{ 'products.facets.sort_by_label' | t }}</label>
+            <div class="relative">
+              <select
+                name="sort_by"
+                class="appearance-none bg-transparent border-b border-gray-300 pr-8 py-1 text-sm focus:outline-none focus:border-black"
+                id="SortBy"
+                aria-describedby="a11y-refresh-page-message"
+              >
+                {%- for option in results.sort_options -%}
+                  <option
+                    value="{{ option.value | escape }}"
+                    {% if option.value == sort_by %}
+                      selected="selected"
+                    {% endif %}
+                  >
+                    {{ option.name | escape }}
+                  </option>
+                {%- endfor -%}
+              </select>
+              {% render 'icon-caret', class: 'absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 pointer-events-none' %}
+            </div>
+          </div>
+        {%- endif -%}
+      </form>
+    </facet-filters-form>
+
+    <!-- Active Facets (Pills) -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <facet-remove>
+            <a
+              href="{{ value.url_to_remove }}"
+              class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs hover:bg-gray-200 transition"
+            >
+              {{ filter.label }}: {{ value.label }}
+              {% render 'icon-close', class: 'w-3 h-3' %}
+            </a>
+          </facet-remove>
+        {%- endfor -%}
+
+        {% if filter.type == 'price_range' %}
+          {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+            <facet-remove>
+              <a
+                href="{{ filter.url_to_remove }}"
+                class="inline-flex items-center gap-2 px-3 py-1 bg-gray-100 rounded-full text-xs hover:bg-gray-200 transition"
+              >
+                {{ filter.min_value.value | money }} - {{ filter.max_value.value | money }}
+                {% render 'icon-close', class: 'w-3 h-3' %}
+              </a>
+            </facet-remove>
+          {%- endif -%}
+        {% endif %}
+      {%- endfor -%}
+
+      <facet-remove>
+        <a href="{{ results.url }}?sort_by={{ results.sort_by }}" class="text-xs underline p-1">Clear all</a>
+      </facet-remove>
+    </div>
+  {%- endif -%}
+</div>

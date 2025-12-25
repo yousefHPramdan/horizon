@@ -1,0 +1,123 @@
+{% comment %}
+  Renders a modern product media gallery using Tailwind CSS.
+  Accepts:
+  - product: {Object} Product liquid object
+  - variant_images: {Array} Product images associated with a variant
+  - limit: {Number} Limit media items
+
+  Usage:
+  {% render 'product-media-gallery-modern', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign media_count = product.media.size
+  assign bind_zoom = true
+  if section.settings.image_zoom == 'none'
+    assign bind_zoom = false
+  endif
+-%}
+
+<media-gallery
+  id="MediaGallery-{{ section.id }}"
+  class="block w-full"
+  role="region"
+  aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
+  data-desktop-layout="grid"
+>
+  <!-- Main Media Display -->
+  <div class="relative w-full overflow-hidden" id="GalleryViewer-{{ section.id }}">
+    <ul
+      class="flex w-full snap-x snap-mandatory overflow-x-auto scroll-smooth md:grid md:grid-cols-1 md:gap-4 md:overflow-visible md:snap-none no-scrollbar"
+      role="list"
+    >
+      {%- if product.selected_or_first_available_variant.featured_media != null -%}
+        {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}
+        <li
+          id="Slide-{{ section.id }}-{{ featured_media.id }}"
+          class="relative w-full flex-shrink-0 snap-center md:snap-align-none"
+          data-media-id="{{ section.id }}-{{ featured_media.id }}"
+        >
+          <div class="mobile-media-aspect-ratio md:aspect-square relative w-full overflow-hidden rounded-lg bg-gray-100">
+            {{
+              featured_media
+              | image_url: width: 1400
+              | image_tag:
+                loading: 'eager',
+                class: 'w-full h-full object-cover',
+                widths: '375, 550, 750, 1100, 1500',
+                sizes: '(min-width: 768px) 50vw, 100vw',
+                alt: featured_media.alt
+              | escape
+            }}
+
+            {%- if bind_zoom -%}
+              <button class="absolute top-4 right-4 p-2 bg-white/80 rounded-full hover:bg-white transition opacity-0 group-hover:opacity-100 hidden md:block">
+                <span class="sr-only">{{ 'products.product.media.open_media' | t: index: 1 }}</span>
+                {% render 'icon-zoom' %}
+              </button>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endif -%}
+
+      {%- for media in product.media -%}
+        {%- unless media.id == product.selected_or_first_available_variant.featured_media.id -%}
+          <li
+            id="Slide-{{ section.id }}-{{ media.id }}"
+            class="relative w-full flex-shrink-0 snap-center md:snap-align-none"
+            data-media-id="{{ section.id }}-{{ media.id }}"
+          >
+            <div class="aspect-square relative w-full overflow-hidden rounded-lg bg-gray-100">
+              {% if media.media_type == 'image' %}
+                {{
+                  media
+                  | image_url: width: 1400
+                  | image_tag:
+                    loading: 'lazy',
+                    class: 'w-full h-full object-cover',
+                    widths: '375, 550, 750, 1100, 1500',
+                    sizes: '(min-width: 768px) 50vw, 100vw',
+                    alt: media.alt
+                  | escape
+                }}
+              {% else %}
+                <!-- Support for External Video / Model / Video -->
+                <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+                  {% render 'icon-video' %}
+                  <span class="sr-only">{{ media.media_type }}</span>
+                </div>
+              {% endif %}
+            </div>
+          </li>
+        {%- endunless -%}
+      {%- endfor -%}
+    </ul>
+
+    <!-- Mobile Slider Indicators -->
+    {% if media_count > 1 %}
+      <div class="flex justify-center gap-2 mt-4 md:hidden">
+        {% for media in product.media %}
+          <div class="w-2 h-2 rounded-full bg-gray-300 {% if forloop.first %}bg-black{% endif %}"></div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Thumbnails (Desktop Only) -->
+  {% if media_count > 1 %}
+    <ul class="hidden md:grid grid-cols-6 gap-2 mt-4">
+      {%- for media in product.media -%}
+        <li class="cursor-pointer border-2 border-transparent hover:border-black rounded-md overflow-hidden transition-all">
+          {{
+            media
+            | image_url: width: 200
+            | image_tag: class: 'w-full h-full object-cover aspect-square', loading: 'lazy'
+          }}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {% endif %}
+</media-gallery>
+
+<!-- Use Dawn's JS or a simplified version for gallery interaction -->
+<script src="{{ 'media-gallery.js' | asset_url }}" defer="defer"></script>

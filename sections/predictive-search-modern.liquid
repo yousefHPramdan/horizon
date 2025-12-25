@@ -1,0 +1,51 @@
+{% comment %}
+  Renders predictive search results
+  Usage: <predictive-search> container in header
+{% endcomment %}
+
+{%- if predictive_search.performed -%}
+  <div
+    id="predictive-search-results"
+    class="absolute top-full left-0 w-full bg-white shadow-lg border-t z-50 rounded-b-lg overflow-hidden"
+  >
+    <div class="container mx-auto px-4 py-6 max-w-7xl">
+      {%- if predictive_search.resources.products.size > 0 -%}
+        <h3 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-4">
+          {{ 'templates.search.products' | t }}
+        </h3>
+
+        <ul class="grid grid-cols-1 md:grid-cols-4 gap-4" role="listbox">
+          {%- for product in predictive_search.resources.products -%}
+            <li role="option">
+              <a href="{{ product.url }}" class="group flex gap-3 md:block">
+                {%- if product.featured_media != blank -%}
+                  <div class="relative w-16 md:w-full aspect-square bg-gray-100 rounded overflow-hidden">
+                    <img
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      src="{{ product.featured_media | image_url: width: 300 }}"
+                      alt="{{ product.featured_media.alt }}"
+                      width="150"
+                      height="150"
+                    >
+                  </div>
+                {%- endif -%}
+                <div class="mt-2 text-sm">
+                  <p class="font-medium text-gray-900 group-hover:underline">{{ product.title }}</p>
+                  <p class="text-gray-500">{{ product.price | money }}</p>
+                </div>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="text-gray-500 text-center py-4">
+          {{ 'templates.search.no_results' | t: terms: predictive_search.terms }}
+        </p>
+      {%- endif -%}
+
+      <div class="mt-4 pt-4 border-t flex justify-center">
+        <button class="text-sm font-bold underline">Search for "{{ predictive_search.terms }}"</button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

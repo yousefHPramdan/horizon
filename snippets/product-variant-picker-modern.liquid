@@ -1,0 +1,78 @@
+{% comment %}
+  Renders modern product variant picker.
+  Accepts:
+  - product: {Object} product object.
+  - block: {Object} passing the block information.
+  - product_form_id: {String} Id of the product form to which the variant picker is associated.
+{% endcomment %}
+
+{%- unless product.has_only_default_variant -%}
+  <variant-selects
+    id="variant-selects-{{ section.id }}"
+    class="block space-y-4"
+    data-section="{{ section.id }}"
+    data-url="{{ product.url }}"
+  >
+    {%- for option in product.options_with_values -%}
+      <div class="product-option">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          {{ option.name }}: <span class="text-gray-900 font-bold ml-1">{{ option.selected_value }}</span>
+        </label>
+
+        {%- if block.settings.picker_type == 'button' -%}
+          <div class="flex flex-wrap gap-2">
+            {%- for value in option.values -%}
+              <input
+                type="radio"
+                id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                name="{{ option.name }}"
+                value="{{ value | escape }}"
+                form="{{ product_form_id }}"
+                class="sr-only peer"
+                {% if option.selected_value == value %}
+                  checked
+                {% endif %}
+              >
+              <label
+                for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+                class="px-4 py-2 border border-gray-300 rounded-full text-sm cursor-pointer hover:border-black peer-checked:bg-black peer-checked:text-white transition-all peer-checked:border-black"
+              >
+                {{ value }}
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <div class="relative">
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="w-full appearance-none border border-gray-300 rounded-md py-2 pl-3 pr-10 text-base focus:outline-none focus:ring-1 focus:ring-black focus:border-black sm:text-sm"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {%- for value in option.values -%}
+                <option
+                  value="{{ value | escape }}"
+                  {% if option.selected_value == value %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+            <!-- Caret Icon -->
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+
+    <script type="application/json">
+      {{ product.variants | json }}
+    </script>
+  </variant-selects>
+{%- endunless -%}
