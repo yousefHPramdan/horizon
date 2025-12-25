@@ -1,0 +1,82 @@
+{% comment %}
+  Quantity Input - Standalone Vanilla JS Component
+  Drop-in ready. No external dependencies besides Tailwind CSS for styling.
+{% endcomment %}
+
+<div class="quantity-input-wrapper">
+  <quantity-input class="flex items-center rounded-full border border-gray-200 bg-white p-1 shadow-sm transition-colors hover:border-gray-300">
+    <button
+      type="button"
+      class="flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-600 transition-all hover:bg-gray-100 hover:text-black active:scale-90 disabled:cursor-not-allowed disabled:opacity-50"
+      data-action="decrease"
+      aria-label="Decrease quantity"
+    >
+      <svg class="h-3 w-3" viewBox="0 0 12 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.25 0.25H0.75C0.473858 0.25 0.25 0.473858 0.25 0.75V1.25C0.25 1.52614 0.473858 1.75 0.75 1.75H11.25C11.5261 1.75 11.75 1.52614 11.75 1.25V0.75C11.75 0.473858 11.5261 0.25 11.25 0.25Z" fill="currentColor"/>
+      </svg>
+    </button>
+
+    <input
+      type="number"
+      class="w-12 appearance-none border-none bg-transparent p-0 text-center text-sm font-medium text-gray-900 focus:ring-0"
+      name="quantity"
+      value="1"
+      min="1"
+      aria-label="Quantity"
+    >
+
+    <button
+      type="button"
+      class="flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-600 transition-all hover:bg-gray-100 hover:text-black active:scale-90 disabled:cursor-not-allowed disabled:opacity-50"
+      data-action="increase"
+      aria-label="Increase quantity"
+    >
+      <svg class="h-3 w-3" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.25 5.25H6.75V0.75C6.75 0.473858 6.52614 0.25 6.25 0.25H5.75C5.47386 0.25 5.25 0.473858 5.25 0.75V5.25H0.75C0.473858 5.25 0.25 5.47386 0.25 5.75V6.25C0.25 6.52614 0.473858 6.75 0.75 6.75H5.25V11.25C5.25 11.5261 5.47386 11.75 5.75 11.75H6.25C6.52614 11.75 6.75 11.5261 6.75 11.25V6.75H11.25C11.5261 6.75 11.75 6.52614 11.75 6.25V5.75C11.75 5.47386 11.5261 5.25 11.25 5.25Z" fill="currentColor"/>
+      </svg>
+    </button>
+  </quantity-input>
+</div>
+
+<script>
+  if (!customElements.get('quantity-input')) {
+    class QuantityInput extends HTMLElement {
+      constructor() {
+        super();
+        this.input = this.querySelector('input');
+        this.changeEvent = new Event('change', { bubbles: true });
+
+        this.querySelectorAll('button').forEach((button) =>
+          button.addEventListener('click', this.onButtonClick.bind(this))
+        );
+      }
+
+      onButtonClick(event) {
+        event.preventDefault();
+        const action = event.currentTarget.dataset.action;
+        const previousValue = this.input.value;
+        const step = parseInt(this.input.step || 1);
+        const min = parseInt(this.input.min || 1);
+        const max = parseInt(this.input.max || 9999);
+        let value = parseInt(this.input.value);
+
+        if (action === 'decrease') {
+          value -= step;
+        } else if (action === 'increase') {
+          value += step;
+        }
+
+        // Clamp value
+        if (value < min) value = min;
+        if (value > max) value = max;
+
+        if (value.toString() !== previousValue) {
+          this.input.value = value;
+          this.input.dispatchEvent(this.changeEvent);
+        }
+      }
+    }
+
+    customElements.define('quantity-input', QuantityInput);
+  }
+</script>

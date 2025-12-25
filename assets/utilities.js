@@ -35,7 +35,7 @@ export function isLowPowerDevice() {
  * @returns {boolean} True if the browser supports View Transitions API, false otherwise
  */
 export function supportsViewTransitions() {
-  return typeof document.startViewTransition === 'function';
+  return typeof /** @type {any} */ (document).startViewTransition === 'function';
 }
 
 /**
@@ -98,18 +98,20 @@ export function startViewTransition(callback, types) {
 
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
+    /** @type {(() => void)[]} */
     let cleanupFunctions = [];
 
     if (types) {
       for (const type of types) {
-        if (viewTransitionTypes[type]) {
-          const cleanupFunction = await viewTransitionTypes[type]();
+        const transitionFn = viewTransitionTypes[type];
+        if (transitionFn) {
+          const cleanupFunction = await transitionFn();
           if (cleanupFunction) cleanupFunctions.push(cleanupFunction);
         }
       }
     }
 
-    const transition = document.startViewTransition(callback);
+    const transition = /** @type {any} */ (document).startViewTransition(callback);
 
     if (!viewTransition.current) {
       viewTransition.current = transition.finished;
@@ -315,7 +317,7 @@ export function onAnimationEnd(elements, callback, options = { subtree: true }) 
     }
 
     return acc;
-  }, /** @type {Promise<Animation>[]} */ ([]));
+  }, /** @type {Promise<Animation>[]} */([]));
 
   return Promise.allSettled(animationPromises).then(callback);
 }
@@ -535,7 +537,10 @@ function getCardsToAnimate(grid, cards) {
   const cardSample = itemSample.querySelector('product-card');
   const gridStyle = getComputedStyle(grid);
 
-  const galleryAspectRatio = cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
+  if (!cardSample) return 0;
+
+  const galleryAspectRatio =
+    cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
   let aspectRatio = parseFloat(galleryAspectRatio) || 0.5;
   if (galleryAspectRatio?.includes('/')) {
     const [width = '1', height = '2'] = galleryAspectRatio.split('/');

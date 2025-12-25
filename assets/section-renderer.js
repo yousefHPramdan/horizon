@@ -168,11 +168,13 @@ export async function morphSection(sectionId, html) {
   const newElement = fragment.getElementById(buildSectionSelector(sectionId));
 
   if (!existingElement) {
-    throw new Error(`Section ${sectionId} not found`);
+    console.warn(`[SectionRenderer] Section ${sectionId} not found in DOM`);
+    return;
   }
 
   if (!newElement) {
-    throw new Error(`Section ${sectionId} not found in the section rendering response`);
+    console.warn(`[SectionRenderer] Section ${sectionId} not found in the section rendering response`);
+    return;
   }
 
   morph(existingElement, newElement);

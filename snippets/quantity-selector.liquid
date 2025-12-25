@@ -30,11 +30,11 @@
 %}
 
 <div
-  class="quantity-selector-wrapper"
+  class="quantity-selector-wrapper flex items-center flex-wrap gap-2 md:gap-4"
   ref="quantitySelectorWrapper"
 >
   <{{ component_name }}
-    class="quantity-selector{% if class %} {{ class }}{% endif %}"
+    class="quantity-selector flex items-center rounded-full border border-gray-200 shadow-sm bg-white p-1 transition-colors hover:border-gray-300{% if class %} {{ class }}{% endif %}"
     data-variant-id="{{ variant.id }}"
     {% if line_index == null %}
       {{- block.shopify_attributes -}}
@@ -44,21 +44,22 @@
     {% endif %}
   >
     <button
-      class="button quantity-minus button-unstyled"
+      class="button quantity-minus flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-600 transition-all hover:bg-gray-100 hover:text-black active:scale-90 disabled:cursor-not-allowed disabled:opacity-50"
       type="button"
       name="minus"
       on:click="/decreaseQuantity"
       ref="minusButton"
+      aria-label="{{ 'accessibility.decrease_quantity' | t }}"
       {% if can_update_quantity == false %}
         disabled
       {% endif %}
     >
-      <span class="visually-hidden">{{ 'accessibility.decrease_quantity' | t }}</span
-      ><span class="svg-wrapper icon-plus">
+      <span class="svg-wrapper h-3 w-3">
         {{- 'icon-minus.svg' | inline_asset_content -}}
       </span>
     </button>
     <input
+      class="w-12 appearance-none border-none bg-transparent p-0 text-center text-sm font-medium text-gray-900 focus:ring-0"
       type="number"
       name="{% if line_index %}updates[]{% else %}quantity{% endif %}"
       value="{{ in_cart_quantity | default: variant.quantity_rule.min | default: 1 }}"
@@ -81,17 +82,17 @@
       {% endif %}
     >
     <button
-      class="button quantity-plus button-unstyled"
+      class="button quantity-plus flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-600 transition-all hover:bg-gray-100 hover:text-black active:scale-90 disabled:cursor-not-allowed disabled:opacity-50"
       type="button"
       name="plus"
       on:click="/increaseQuantity"
       ref="plusButton"
+      aria-label="{{ 'accessibility.increase_quantity' | t }}"
       {% if can_update_quantity == false %}
         disabled
       {% endif %}
     >
-      <span class="visually-hidden">{{ 'accessibility.increase_quantity' | t }}</span
-      ><span class="svg-wrapper icon-plus">
+      <span class="svg-wrapper h-3 w-3">
         {{- 'icon-plus.svg' | inline_asset_content -}}
       </span>
     </button>
@@ -134,7 +135,7 @@
       -%}
 
       <price-per-item
-        class="price-per-item"
+        class="price-per-item text-xs text-gray-500"
         data-variant-id="{{ variant.id }}"
         data-variant-price="{%- if use_currency -%}{{ variant.price | money_with_currency | escape }}{%- else -%}{{ variant.price | money | escape }}{%- endif -%}"
         data-min-quantity="{{ variant.quantity_rule.min | default: 1 }}"
@@ -160,16 +161,3 @@
     {%- endif -%}
   {%- endif -%}
 </div>
-
-{% stylesheet %}
-  .quantity-selector-wrapper {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: calc(var(--gap-sm) / 2);
-
-    @media screen and (min-width: 750px) {
-      gap: var(--gap-sm);
-    }
-  }
-{% endstylesheet %}
