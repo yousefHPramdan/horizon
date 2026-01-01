@@ -227,6 +227,69 @@
         "padding-block-end": 0
       }
     },
+    "kinetic_parallax_grid_VCnAXP": {
+      "type": "kinetic-parallax-grid",
+      "blocks": {
+        "grid_item_cKgaLU": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-8",
+            "parallax_speed": 50,
+            "heading": "Project Title",
+            "link": ""
+          }
+        },
+        "grid_item_nqMzAH": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 50,
+            "heading": "Project Title",
+            "link": ""
+          }
+        },
+        "grid_item_dpdwph": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 50,
+            "heading": "Project Title",
+            "link": ""
+          }
+        },
+        "grid_item_WgarEG": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 50,
+            "heading": "Project Title",
+            "link": ""
+          }
+        },
+        "grid_item_iKyUiD": {
+          "type": "grid_item",
+          "settings": {
+            "width": "col-span-12 md:col-span-4",
+            "parallax_speed": 50,
+            "heading": "Project Title",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "grid_item_cKgaLU",
+        "grid_item_nqMzAH",
+        "grid_item_dpdwph",
+        "grid_item_WgarEG",
+        "grid_item_iKyUiD"
+      ],
+      "name": "Kinetic Parallax Grid",
+      "settings": {
+        "bg_color": "#0f172a",
+        "title": "Visual Stories",
+        "text_color": "#ffffff"
+      }
+    },
     "3d_feature_showcase_fi8YM3": {
       "type": "3d-feature-showcase",
       "blocks": {
@@ -279,7 +342,7 @@
       ],
       "name": "3D Feature Showcase",
       "settings": {
-        "model_url": "https://youtu.be/0jeoo7Ol3aI",
+        "model_url": "https://cdn.shopify.com/3d/models/e79cad25e2ec85be/tripo_pbr_model_8697bd5e-9cf8-423d-952d-d3777bbfbbb1.glb",
         "model_color": "#22d3ee",
         "bg_color": "#020617",
         "heading": "Tech Specs"
@@ -289,7 +352,7 @@
       "type": "floating-kinetic-grid",
       "name": "Floating Kinetic Grid",
       "settings": {
-        "collection": "",
+        "collection": "automated-collection",
         "limit": 9,
         "parallax_intensity": 50,
         "bg_color": "#ffffff",
@@ -347,6 +410,7 @@
     "hero_jVaWmY",
     "featured_products",
     "collection_list",
+    "kinetic_parallax_grid_VCnAXP",
     "3d_feature_showcase_fi8YM3",
     "floating_kinetic_grid_cncqc3",
     "interactive_3d_slider_FXBUYU"
