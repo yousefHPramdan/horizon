@@ -279,7 +279,7 @@
       ],
       "name": "3D Feature Showcase",
       "settings": {
-        "model_url": "https://sketchfab.com/3d-models/wide-cylinder-base-reference-c735f3a73ae84be098b83e98dee94fec",
+        "model_url": "https://youtu.be/0jeoo7Ol3aI",
         "model_color": "#22d3ee",
         "bg_color": "#020617",
         "heading": "Tech Specs"
@@ -300,6 +300,14 @@
     "interactive_3d_slider_FXBUYU": {
       "type": "interactive-3d-slider",
       "blocks": {
+        "slide_NCywzR": {
+          "type": "slide",
+          "settings": {
+            "title": "Futuristic Product",
+            "price": "$99.00",
+            "link": ""
+          }
+        },
         "slide_QkArpD": {
           "type": "slide",
           "settings": {
@@ -320,13 +328,14 @@
         }
       },
       "block_order": [
+        "slide_NCywzR",
         "slide_QkArpD",
         "slide_dq9KNY"
       ],
       "name": "Futuristic 3D Slider",
       "settings": {
         "collection": "",
-        "product_limit": 6,
+        "product_limit": 3,
         "fallback_model_url": "https://youtu.be/0jeoo7Ol3aI",
         "bg_color": "#0f172a",
         "accent_color": "#38bdf8",
