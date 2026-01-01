@@ -325,9 +325,9 @@
       ],
       "name": "Futuristic 3D Slider",
       "settings": {
-        "collection": "frontpage",
+        "collection": "",
         "product_limit": 6,
-        "fallback_model_url": "",
+        "fallback_model_url": "https://youtu.be/0jeoo7Ol3aI",
         "bg_color": "#0f172a",
         "accent_color": "#38bdf8",
         "text_color": "#ffffff"
