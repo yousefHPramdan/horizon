@@ -17,9 +17,9 @@
           "name": "t:names.heading",
           "settings": {
             "text": "<p>Browse our latest products</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "right",
             "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
@@ -28,12 +28,12 @@
             "case": "none",
             "wrap": "pretty",
             "color": "var(--color-foreground-heading)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
+            "background": true,
+            "background_color": "#dfdfdf",
+            "corner_radius": 23,
+            "padding-block-start": 54,
+            "padding-block-end": 39,
+            "padding-inline-start": 46,
             "padding-inline-end": 0
           },
           "blocks": {}
@@ -71,13 +71,13 @@
         "media_type_2_mobile": "image",
         "image_2_mobile": "shopify://shop_images/snowboard_wax.png",
         "link": "",
-        "open_in_new_tab": false,
+        "open_in_new_tab": true,
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "space-between",
         "vertical_alignment": "flex-end",
         "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
+        "horizontal_alignment_flex_direction_column": "flex-end",
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 24,
         "section_width": "page-width",
@@ -86,212 +86,12 @@
         "color_scheme": "scheme-6",
         "toggle_overlay": true,
         "overlay_color": "#12121266",
-        "overlay_style": "solid",
-        "gradient_direction": "to bottom",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 100,
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": true,
+        "reflection_opacity": 100,
+        "padding-block-start": 16,
         "padding-block-end": 72
-      }
-    },
-    "featured_products": {
-      "type": "product-list",
-      "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "static": true,
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 16,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 8,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 12,
-        "color_scheme": "",
-        "padding-block-start": 48,
-        "padding-block-end": 48
-      }
-    },
-    "collection_list": {
-      "type": "collection-list",
-      "blocks": {
-        "static-collection-card": {
-          "type": "_collection-card",
-          "static": true,
-          "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "collection_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0
-          },
-          "blocks": {
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "static": true,
-              "settings": {
-                "image_ratio": "portrait",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": []
-        }
-      },
-      "settings": {
-        "collection_list": [
-          "all"
-        ],
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "columns": 3,
-        "mobile_columns": "1",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "bento_gap": 8,
-        "rows_gap": 8,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "kinetic_parallax_grid_VCnAXP": {
-      "type": "kinetic-parallax-grid",
-      "blocks": {
-        "grid_item_cKgaLU": {
-          "type": "grid_item",
-          "settings": {
-            "width": "col-span-12 md:col-span-8",
-            "parallax_speed": 50,
-            "heading": "Project Title",
-            "link": ""
-          }
-        },
-        "grid_item_nqMzAH": {
-          "type": "grid_item",
-          "settings": {
-            "width": "col-span-12 md:col-span-4",
-            "parallax_speed": 50,
-            "heading": "Project Title",
-            "link": ""
-          }
-        },
-        "grid_item_dpdwph": {
-          "type": "grid_item",
-          "settings": {
-            "width": "col-span-12 md:col-span-4",
-            "parallax_speed": 50,
-            "heading": "Project Title",
-            "link": ""
-          }
-        },
-        "grid_item_WgarEG": {
-          "type": "grid_item",
-          "settings": {
-            "width": "col-span-12 md:col-span-4",
-            "parallax_speed": 50,
-            "heading": "Project Title",
-            "link": ""
-          }
-        },
-        "grid_item_iKyUiD": {
-          "type": "grid_item",
-          "settings": {
-            "width": "col-span-12 md:col-span-4",
-            "parallax_speed": 50,
-            "heading": "Project Title",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "grid_item_cKgaLU",
-        "grid_item_nqMzAH",
-        "grid_item_dpdwph",
-        "grid_item_WgarEG",
-        "grid_item_iKyUiD"
-      ],
-      "name": "Kinetic Parallax Grid",
-      "settings": {
-        "bg_color": "#0f172a",
-        "title": "Visual Stories",
-        "text_color": "#ffffff"
       }
     },
     "3d_feature_showcase_fi8YM3": {
@@ -304,7 +104,7 @@
             "description": "Engineered for minimal drag and maximum efficiency.",
             "rot_x": 0,
             "rot_y": 45,
-            "rot_z": 0
+            "rot_z": 125
           }
         },
         "feature_xhKTEJ": {
@@ -332,9 +132,9 @@
           "settings": {
             "title": "Control",
             "description": "Engineered for minimal drag and maximum efficiency.",
-            "rot_x": 90,
-            "rot_y": 0,
-            "rot_z": 0
+            "rot_x": 345,
+            "rot_y": 220,
+            "rot_z": 190
           }
         }
       },
@@ -412,9 +212,6 @@
   },
   "order": [
     "hero_jVaWmY",
-    "featured_products",
-    "collection_list",
-    "kinetic_parallax_grid_VCnAXP",
     "3d_feature_showcase_fi8YM3",
     "floating_kinetic_grid_cncqc3",
     "interactive_3d_slider_FXBUYU"
