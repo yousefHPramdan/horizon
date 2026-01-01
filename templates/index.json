@@ -250,6 +250,16 @@
             "rot_z": 0
           }
         },
+        "feature_dBnyAT": {
+          "type": "feature",
+          "settings": {
+            "title": "Aerodynamic",
+            "description": "Engineered for minimal drag and maximum efficiency.",
+            "rot_x": 0,
+            "rot_y": 0,
+            "rot_z": 0
+          }
+        },
         "feature_VaYTef": {
           "type": "feature",
           "settings": {
@@ -264,6 +274,7 @@
       "block_order": [
         "feature_EVrLRJ",
         "feature_xhKTEJ",
+        "feature_dBnyAT",
         "feature_VaYTef"
       ],
       "name": "3D Feature Showcase",
@@ -285,6 +296,42 @@
         "text_color": "#000000",
         "accent_color": "#3b82f6"
       }
+    },
+    "interactive_3d_slider_FXBUYU": {
+      "type": "interactive-3d-slider",
+      "blocks": {
+        "slide_QkArpD": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Main_b9e0da7f-db89-4d41-83f0-7f417b02831d.jpg",
+            "title": "Futuristic Product",
+            "price": "$99.00",
+            "link": "#"
+          }
+        },
+        "slide_dq9KNY": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/Main_b13ad453-477c-4ed1-9b43-81f3345adfd6.jpg",
+            "title": "Futuristic Product",
+            "price": "$99.00",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_QkArpD",
+        "slide_dq9KNY"
+      ],
+      "name": "Futuristic 3D Slider",
+      "settings": {
+        "collection": "frontpage",
+        "product_limit": 6,
+        "fallback_model_url": "",
+        "bg_color": "#0f172a",
+        "accent_color": "#38bdf8",
+        "text_color": "#ffffff"
+      }
     }
   },
   "order": [
@@ -292,6 +339,7 @@
     "featured_products",
     "collection_list",
     "3d_feature_showcase_fi8YM3",
-    "floating_kinetic_grid_cncqc3"
+    "floating_kinetic_grid_cncqc3",
+    "interactive_3d_slider_FXBUYU"
   ]
 }
